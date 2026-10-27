@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TYSON STORE | متجر تايسون للخدمات الرقمية</title>
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #08090b;
+            --panel-bg: #0f1216;
+            --border-color: #1e262f;
+            --kick-green: #53fc18;
+            --kick-glow: rgba(83, 252, 24, 0.35);
+            --text-main: #f0f4f8;
+            --text-muted: #8b9bb4;
+            --accent-red: #ff3366;
+            --accent-blue: #00d2ff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Tajawal', 'Fira Code', sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(83, 252, 24, 0.08) 0%, transparent 60%),
+                linear-gradient(to bottom, rgba(8, 9, 11, 0.95), rgba(8, 9, 11, 0.98));
+        }
+
+        /* Top Bar */
+        .topbar {
+            background: #0b0e12;
+            border-bottom: 1px solid var(--border-color);
+            padding: 10px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .system-status {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .status-badge {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: var(--kick-green);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--kick-green);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.4; }
+            50% { opacity: 1; }
+            100% { opacity: 0.4; }
+        }
+
+        /* Header */
+        header {
+            background: rgba(15, 18, 22, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.6rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            color: #fff;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        .logo i {
+            color: var(--kick-green);
+            filter: drop-shadow(0 0 8px var(--kick-green));
+        }
+
+        .logo span {
+            color: var(--kick-green);
+        }
+
+        .user-panel {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .balance-card {
+            background: #151a21;
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .balance-amount {
+            color: var(--kick-green);
+            font-weight: 700;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .btn-deposit {
+            background: var(--kick-green);
+            color: #000;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 0 15px var(--kick-glow);
+        }
+
+        .btn-deposit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(83, 252, 24, 0.6);
+        }
+
+        /* Container & Grid */
+        .main-container {
+            max-width: 1300px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 24px;
+            width: 100%;
+            flex: 1;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            height: fit-content;
+        }
+
+        .menu-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-item {
+            padding: 12px 16px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 600;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: rgba(83, 252, 24, 0.08);
+            color: var(--kick-green);
+            border-right: 3px solid var(--kick-green);
+        }
+
+        /* Main Workspace Section Management */
+        .section-panel {
+            display: none;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .section-panel.active-section {
+            display: flex;
+        }
+
+        .banner {
+            background: linear-gradient(135deg, rgba(83, 252, 24, 0.15) 0%, rgba(15, 18, 22, 0.9) 100%);
+            border: 1px solid rgba(83, 252, 24, 0.3);
+            border-radius: 12px;
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .banner h2 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+
+        .banner p {
+            color: var(--text-muted);
+            max-width: 600px;
+        }
+
+        /* Form Controls */
+        .panel-card {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .card-header {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 12px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .form-control, .form-select, textarea {
+            width: 100%;
+            background: #14181f;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: #fff;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .form-control:focus, .form-select:focus, textarea:focus {
+            border-color: var(--kick-green);
+            box-shadow: 0 0 10px rgba(83, 252, 24, 0.2);
+        }
+
+        /* Presets */
+        .qty-presets {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .qty-btn {
+            background: #14181f;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .qty-btn:hover {
+            border-color: var(--kick-green);
+            color: var(--kick-green);
+        }
+
+        /* Price Calculation Box */
+        .price-box {
+            background: rgba(83, 252, 24, 0.05);
+            border: 1px dashed var(--kick-green);
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .price-box .title {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .price-box .amount {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--kick-green);
+            font-family: 'Fira Code', monospace;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--kick-green);
+            color: #000;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 1.05rem;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.2s;
+            box-shadow: 0 0 15px var(--kick-glow);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(83, 252, 24, 0.6);
+        }
+
+        /* Terminal Console Logs */
+        .terminal-box {
+            background: #050607;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            color: #8b9bb4;
+            max-height: 180px;
+            overflow-y: auto;
+        }
+
+        .log-line { margin-bottom: 6px; }
+        .log-success { color: var(--kick-green); }
+        .log-info { color: var(--accent-blue); }
+
+        /* Tables for Order History */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: right;
+        }
+
+        th, td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+
+        th {
+            background: #14181f;
+            color: var(--text-muted);
+        }
+
+        .badge-status {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .badge-success { background: rgba(83, 252, 24, 0.2); color: var(--kick-green); }
+        .badge-pending { background: rgba(0, 210, 255, 0.2); color: var(--accent-blue); }
+
+        /* API Code Snippet */
+        .code-block {
+            background: #050607;
+            border: 1px solid var(--border-color);
+            padding: 14px;
+            border-radius: 8px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            color: var(--kick-green);
+            direction: ltr;
+            text-align: left;
+            overflow-x: auto;
+            margin-top: 10px;
+        }
+
+        /* Payment Tab Design inside Deposit Modal */
+        .payment-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+            overflow-x: auto;
+        }
+
+        .pay-tab {
+            background: #14181f;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .pay-tab.active-pay {
+            background: var(--kick-green);
+            color: #000;
+            font-weight: 700;
+        }
+
+        .pay-content {
+            display: none;
+        }
+
+        .pay-content.active-content {
+            display: block;
+        }
+
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-card {
+            background: var(--panel-bg);
+            border: 1px solid var(--kick-green);
+            width: 90%;
+            max-width: 520px;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 0 30px rgba(83, 252, 24, 0.2);
+        }
+
+        .wallet-addr {
+            background: #08090b;
+            padding: 12px;
+            border-radius: 6px;
+            font-family: 'Fira Code', monospace;
+            word-break: break-all;
+            margin: 12px 0;
+            border: 1px solid var(--border-color);
+            color: var(--kick-green);
+            text-align: center;
+        }
+
+        .support-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .support-card {
+            background: #14181f;
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .support-card:hover {
+            border-color: var(--kick-green);
+            transform: translateY(-3px);
+        }
+
+        .support-card i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--kick-green);
+        }
+
+        /* Footer & Payment Icons Bar */
+        footer {
+            background: #07080a;
+            border-top: 1px solid var(--border-color);
+            padding: 24px 20px;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .payment-methods-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .pay-icon-btn {
+            background: #10141b;
+            border: 1px solid var(--border-color);
+            padding: 10px 18px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .pay-icon-btn:hover {
+            border-color: var(--kick-green);
+            color: var(--kick-green);
+            transform: translateY(-2px);
+        }
+
+        .copyright {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top System Bar -->
+    <div class="topbar">
+        <div class="system-status">
+            <span class="status-badge"></span>
+            <span>خوادم TYSON STORE: متصلة 100% (أداء عالي)</span>
+        </div>
+        <div>النظام: Kick API v2.4 | سرعة تنفيذ فائقة</div>
+    </div>
+
+    <!-- Main Header -->
+    <header>
+        <div class="logo" onclick="switchTab('new-order', document.querySelector('.nav-item'))">
+            <i class="fa-solid fa-bolt"></i>
+            TYSON <span>STORE</span>
+        </div>
+        <div class="user-panel">
+            <div class="balance-card">
+                <i class="fa-solid fa-wallet" style="color: var(--kick-green);"></i>
+                <span>الرصيد الحالي:</span>
+                <span class="balance-amount" id="userBalanceDisplay">$0.00</span>
+            </div>
+            <button class="btn-deposit" onclick="openDepositModal()">
+                <i class="fa-solid fa-plus"></i> شحن الرصيد
+            </button>
+        </div>
+    </header>
+
+    <!-- App Main Body -->
+    <div class="main-container">
+
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="menu-title">القائمة الرئيسية</div>
+            <ul class="nav-list">
+                <li class="nav-item active" onclick="switchTab('new-order', this)">
+                    <i class="fa-solid fa-cart-plus"></i> طلب جديد
+                </li>
+                <li class="nav-item" onclick="switchTab('order-history', this)">
+                    <i class="fa-solid fa-list-check"></i> سجل الطلبات
+                </li>
+                <li class="nav-item" onclick="switchTab('api-section', this)">
+                    <i class="fa-solid fa-code"></i> ربط الـ API
+                </li>
+                <li class="nav-item" onclick="switchTab('support-section', this)">
+                    <i class="fa-solid fa-headset"></i> الدعم الفني
+                </li>
+                <li class="nav-item" onclick="openDepositModal()">
+                    <i class="fa-solid fa-credit-card"></i> طرق الدفع والإيداع
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Workspace Area -->
+        <main class="workspace">
+
+            <!-- SECTION 1: NEW ORDER -->
+            <div id="new-order" class="section-panel active-section">
+                <div class="banner">
+                    <h2>أقوى لوحة تزويد مشاهدات Kick في الوطن العربي 🚀</h2>
+                    <p>خدمات مشاهدين حقيقيين وتفاعل شات مباشر بدون أي انقطاع أثناء البث. حدد أي كمية تناسبك وسيقوم النظام بتنفيذها فوراً.</p>
+                </div>
+
+                <div class="panel-card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-microchip" style="color: var(--kick-green);"></i>
+                        إنشاء طلب تزويد مشاهدين Kick
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">اختر الخدمة المطلوبة</label>
+                        <select class="form-select" id="serviceSelect" onchange="calculatePrice()">
+                            <option value="0.40">Kick Live Viewers - مشاهدات بث سريع ($0.40 لكل 100 مشاهدة)</option>
+                            <option value="0.45">Kick HQ Viewers + Chatters - مشاهدات عالية الجودة مع تفاعل شات ($0.45 لكل 100 مشاهدة)</option>
+                            <option value="0.50">Kick Ultra-Stable 24h - مشاهدات ثابتة بدون نقص طوال البث ($0.50 لكل 100 مشاهدة)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">رابط القناة أو البث (Kick Stream URL)</label>
+                        <input type="url" class="form-control" placeholder="https://kick.com/username" id="streamUrl">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">الكمية المطلوبة</label>
+                        <input type="number" class="form-control" id="quantityInput" value="100" min="1" oninput="calculatePrice()">
+                        
+                        <div class="qty-presets">
+                            <button class="qty-btn" onclick="setQty(50)">50</button>
+                            <button class="qty-btn" onclick="setQty(100)">100</button>
+                            <button class="qty-btn" onclick="setQty(500)">500</button>
+                            <button class="qty-btn" onclick="setQty(1000)">1,000</button>
+                            <button class="qty-btn" onclick="setQty(5000)">5,000</button>
+                        </div>
+                    </div>
+
+                    <!-- Calculated Price -->
+                    <div class="price-box">
+                        <div>
+                            <div class="title">التكلفة الإجمالية للطلب:</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted);" id="usdtEquivalent">≈ 0.40 USDT</div>
+                        </div>
+                        <div class="amount" id="totalPrice">$0.40</div>
+                    </div>
+
+                    <button class="btn-submit" onclick="submitOrder()">
+                        <i class="fa-solid fa-paper-plane"></i> إرسال الطلب وتنفيذه أوتوماتيكياً
+                    </button>
+                </div>
+
+                <!-- Terminal Execution Logs -->
+                <div class="panel-card">
+                    <div class="card-header" style="font-size: 0.95rem;">
+                        <i class="fa-solid fa-terminal" style="color: var(--kick-green);"></i>
+                        سجل تنفيذ العمليات المباشر (Terminal Log)
+                    </div>
+                    <div class="terminal-box" id="terminalLog">
+                        <div class="log-line log-info">[SYSTEM]: تم الاتصال بنجاح بـ API شبكة Kick...</div>
+                        <div class="log-line log-success">[READY]: جاهز لاستقبال الطلبات ومعالجتها فورياً.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2: ORDER HISTORY -->
+            <div id="order-history" class="section-panel">
+                <div class="panel-card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-list-check" style="color: var(--kick-green);"></i>
+                        سجل الطلبات السابقة
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>رقم الطلب (ID)</th>
+                                    <th>الخدمة</th>
+                                    <th>الرابط</th>
+                                    <th>الكمية</th>
+                                    <th>التكلفة</th>
+                                    <th>الحالة</th>
+                                </tr>
+                            </thead>
+                            <tbody id="orderTableBody">
+                                <tr>
+                                    <td>#1092</td>
+                                    <td>Kick Live Viewers</td>
+                                    <td>kick.com/tyson_live</td>
+                                    <td>500</td>
+                                    <td>$2.00</td>
+                                    <td><span class="badge-status badge-success">مكتمل</span></td>
+                                </tr>
+                                <tr>
+                                    <td>#1091</td>
+                                    <td>Kick HQ Viewers + Chatters</td>
+                                    <td>kick.com/streamer_x</td>
+                                    <td>1000</td>
+                                    <td>$4.50</td>
+                                    <td><span class="badge-status badge-success">مكتمل</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 3: API INTEGRATION -->
+            <div id="api-section" class="section-panel">
+                <div class="panel-card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-code" style="color: var(--kick-green);"></i>
+                        توثيق الـ API للمطورين وأصحاب اللوحات
+                    </div>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 15px;">يمكنك ربط متجرك الخاص بـ API متجر TYSON STORE لتمرير الطلبات وتنفيذها أوتوماتيكياً.</p>
+                    
+                    <div class="form-group">
+                        <label class="form-label">مفتاح الـ API الخاص بك (API Key)</label>
+                        <input type="text" class="form-control" value="tyson_sec_api_99882211445566778899" readonly>
+                    </div>
+
+                    <div class="form-label">مثال استدعاء الخدمة (cURL Request):</div>
+                    <div class="code-block">
+curl -X POST https://tysonstore.com/api/v2 \<br>
+&nbsp;&nbsp;-d "key=tyson_sec_api_99882211445566778899" \<br>
+&nbsp;&nbsp;-d "action=add" \<br>
+&nbsp;&nbsp;-d "service=1" \<br>
+&nbsp;&nbsp;-d "link=https://kick.com/username" \<br>
+&nbsp;&nbsp;-d "quantity=100"
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 4: SUPPORT CENTER -->
+            <div id="support-section" class="section-panel">
+                <div class="panel-card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-headset" style="color: var(--kick-green);"></i>
+                        مركز الدعم الفني وتذاكر المساعدة
+                    </div>
+
+                    <div class="support-options">
+                        <div class="support-card" onclick="window.open('https://wa.me/', '_blank')">
+                            <i class="fa-brands fa-whatsapp"></i>
+                            <h3>دعم واتساب الفوري</h3>
+                            <p style="font-size: 0.8rem; color: var(--text-muted);">تواصل مباشر 24/7 مع خدمة العملاء</p>
+                        </div>
+                        <div class="support-card" onclick="alert('الشات المباشر يعمل حالياً بوضع الاستعداد!')">
+                            <i class="fa-solid fa-comments"></i>
+                            <h3>المحادثة المباشرة</h3>
+                            <p style="font-size: 0.8rem; color: var(--text-muted);">تحدث مباشرة مع مهندس الدعم</p>
+                        </div>
+                    </div>
+
+                    <div class="card-header" style="font-size: 1rem;">فتح تذكرة دعم جديدة</div>
+                    <div class="form-group">
+                        <label class="form-label">موضوع التذكرة</label>
+                        <select class="form-select">
+                            <option>استفسار عن طلب</option>
+                            <option>مشكلة في الشحن والإيداع</option>
+                            <option>استفسار حول الـ API</option>
+                            <option>مقترح أو شكوى</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">تفاصيل الرسالة</label>
+                        <textarea rows="4" placeholder="اكتب تفاصيل مشكلتك هنا..."></textarea>
+                    </div>
+                    <button class="btn-submit" onclick="alert('تم إرسال تذكرتك بنجاح وسيقوم الدعم الفني بالرد خلال دقائق!')">
+                        إرسال التذكرة
+                    </button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Footer Payment Bar -->
+    <footer>
+        <div class="footer-content">
+            <div style="font-weight: 700; color: #fff;">طرق الدفع والإيداع المتاحة بالكامل:</div>
+            <div class="payment-methods-bar">
+                <div class="pay-icon-btn" onclick="openDepositModalWithTab('pay-crypto')">
+                    <i class="fa-brands fa-bitcoin" style="color: #f7931a;"></i> Binance / USDT
+                </div>
+                <div class="pay-icon-btn" onclick="openDepositModalWithTab('pay-cliq')">
+                    <i class="fa-solid fa-building-columns" style="color: var(--accent-blue);"></i> CliQ / بنكي محلي
+                </div>
+                <div class="pay-icon-btn" onclick="openDepositModalWithTab('pay-cards')">
+                    <i class="fa-solid fa-credit-card" style="color: #eb001b;"></i> Visa / Mastercard
+                </div>
+                <div class="pay-icon-btn" onclick="openDepositModalWithTab('pay-paypal')">
+                    <i class="fa-brands fa-paypal" style="color: #003087;"></i> PayPal
+                </div>
+            </div>
+            <div class="copyright">جميع الحقوق محفوظة © TYSON STORE</div>
+        </div>
+    </footer>
+
+    <!-- Deposit Modal -->
+    <div class="modal-overlay" id="depositModal">
+        <div class="modal-card">
+            <h3 style="color: var(--kick-green); margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center;">
+                <span>إيداع وتزويد الرصيد</span>
+                <span style="cursor: pointer; color: #fff;" onclick="closeDepositModal()">&times;</span>
+            </h3>
+
+            <!-- Payment Method Tabs -->
+            <div class="payment-tabs">
+                <div class="pay-tab active-pay" id="tab-btn-pay-crypto" onclick="switchPayTab('pay-crypto', this)">Binance / Crypto</div>
+                <div class="pay-tab" id="tab-btn-pay-cliq" onclick="switchPayTab('pay-cliq', this)">CliQ / بنكي محلي</div>
+                <div class="pay-tab" id="tab-btn-pay-cards" onclick="switchPayTab('pay-cards', this)">فيزا / ماستركارد</div>
+                <div class="pay-tab" id="tab-btn-pay-paypal" onclick="switchPayTab('pay-paypal', this)">PayPal</div>
+            </div>
+
+            <!-- Tab 1: Crypto / Binance Pay -->
+            <div id="pay-crypto" class="pay-content active-content">
+                <p style="font-size: 0.85rem; color: var(--text-muted);">قم بإرسال المبلغ المراد إيداعه عبر شبكة **USDT TRC20**:</p>
+                <div class="wallet-addr" id="walletAddr">TYSON999999999999999999999999999</div>
+                <button class="btn-submit" style="margin-top: 10px;" onclick="copyWallet()">نسخ عنوان المحفظة</button>
+            </div>
+
+            <!-- Tab 2: CliQ & Local Bank -->
+            <div id="pay-cliq" class="pay-content">
+                <p style="font-size: 0.85rem; color: var(--text-muted);">قم بالتحويل عبر خدمة **كليك (CliQ)** أو الحساب البنكي مباشرة:</p>
+                <div style="background: #08090b; padding: 12px; border-radius: 6px; margin: 10px 0; border: 1px solid var(--border-color); font-size: 0.85rem;">
+                    <div><b>اسم المعرف (CliQ Alias):</b> TYSONSTORE</div>
+                    <div style="margin-top: 6px;"><b>اسم المستفيد:</b> Tyson Store For Digital Services</div>
+                    <div style="margin-top: 6px;"><b>رقم الآيبان (IBAN):</b> JO96BANK0000000123456789</div>
+                </div>
+                <p style="font-size: 0.75rem; color: var(--kick-green);">* بعد الدفع، يرجى إرسال صورة الوصل للدعم الفني لتفعيل الرصيد فوراً.</p>
+            </div>
+
+            <!-- Tab 3: Credit Cards & Apple Pay -->
+            <div id="pay-cards" class="pay-content">
+                <p style="font-size: 0.85rem; color: var(--text-muted);">الدفع الفوري باستخدام الفيزا أو الماستركارد أو Apple Pay:</p>
+                <div class="form-group" style="margin-top: 10px;">
+                    <input type="number" class="form-control" placeholder="أدخل المبلغ بالدولار ($)" id="cardAmount">
+                </div>
+                <button class="btn-submit" onclick="alert('جاري التوجيه إلى بوابة الدفع الآمنة Stripe / Visa...')">
+                    <i class="fa-solid fa-credit-card"></i> الانتقال إلى بوابة الدفع الآمنة
+                </button>
+            </div>
+
+            <!-- Tab 4: PayPal -->
+            <div id="pay-paypal" class="pay-content">
+                <p style="font-size: 0.85rem; color: var(--text-muted);">الدفع التلقائي عن طريق حساب PayPal:</p>
+                <div class="wallet-addr">pay@tysonstore.com</div>
+                <button class="btn-submit" onclick="window.open('https://paypal.me', '_blank')">
+                    فتح حساب PayPal للدفع
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Calculate Total Price
+        function calculatePrice() {
+            const ratePer100 = parseFloat(document.getElementById('serviceSelect').value);
+            const qty = parseInt(document.getElementById('quantityInput').value) || 0;
+
+            if (qty <= 0) {
+                document.getElementById('totalPrice').innerText = "$0.00";
+                document.getElementById('usdtEquivalent').innerText = "أدخل كمية صالحة";
+                return;
+            }
+
+            const total = (qty / 100) * ratePer100;
+            document.getElementById('totalPrice').innerText = "$" + total.toFixed(3);
+            document.getElementById('usdtEquivalent').innerText = `≈ ${total.toFixed(3)} USDT`;
+        }
+
+        function setQty(val) {
+            document.getElementById('quantityInput').value = val;
+            calculatePrice();
+        }
+
+        // Section Navigation Switcher
+        function switchTab(sectionId, element) {
+            document.querySelectorAll('.section-panel').forEach(sec => sec.classList.remove('active-section'));
+            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+            
+            document.getElementById(sectionId).classList.add('active-section');
+            if (element) element.classList.add('active');
+        }
+
+        // Deposit Payment Tabs Switcher
+        function switchPayTab(payId, element) {
+            document.querySelectorAll('.pay-content').forEach(c => c.classList.remove('active-content'));
+            document.querySelectorAll('.pay-tab').forEach(t => t.classList.remove('active-pay'));
+            
+            document.getElementById(payId).classList.add('active-content');
+            if (element) element.classList.add('active-pay');
+        }
+
+        function submitOrder() {
+            const url = document.getElementById('streamUrl').value;
+            const qty = document.getElementById('quantityInput').value;
+            const priceText = document.getElementById('totalPrice').innerText;
+            const price = parseFloat(priceText.replace('$', ''));
+
+            if (!url) {
+                alert('يرجى إدخال رابط قناة Kick أو البث أولاً!');
+                return;
+            }
+
+            const logBox = document.getElementById('terminalLog');
+            const time = new Date().toLocaleTimeString('ar-EG');
+
+            logBox.innerHTML += `<div class="log-line log-info">[${time}] [ORDER]: جاري إرسال ${qty} مشاهد إلى ${url}...</div>`;
+            
+            setTimeout(() => {
+                logBox.innerHTML += `<div class="log-line log-success">[${time}] [SUCCESS]: تم التأكيد والتنفيذ بنجاح! التكلفة: $${price.toFixed(3)}</div>`;
+                logBox.scrollTop = logBox.scrollHeight;
+
+                const table = document.getElementById('orderTableBody');
+                const randomId = Math.floor(1000 + Math.random() * 9000);
+                const newRow = `<tr>
+                    <td>#${randomId}</td>
+                    <td>Kick Live Viewers</td>
+                    <td>${url}</td>
+                    <td>${qty}</td>
+                    <td>$${price.toFixed(3)}</td>
+                    <td><span class="badge-status badge-pending">قيد التنفيذ</span></td>
+                </tr>`;
+                table.innerHTML = newRow + table.innerHTML;
+
+                alert('تم إرسال الطلب بنجاح وهو قيد التنفيذ الآن على Kick!');
+            }, 1000);
+        }
+
+        function openDepositModal() {
+            document.getElementById('depositModal').style.display = 'flex';
+        }
+
+        function openDepositModalWithTab(tabId) {
+            openDepositModal();
+            const tabBtn = document.getElementById('tab-btn-' + tabId);
+            switchPayTab(tabId, tabBtn);
+        }
+
+        function closeDepositModal() {
+            document.getElementById('depositModal').style.display = 'none';
+        }
+
+        function copyWallet() {
+            const addr = document.getElementById('walletAddr').innerText;
+            navigator.clipboard.writeText(addr);
+            alert('تم نسخ عنوان المحفظة بنجاح!');
+        }
+
+        // Initialize Calculation on Load
+        calculatePrice();
+    </script>
+</body>
+</html>
