@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TYSON STORE | متجر خدمات كيك الاحترافي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
+        body { background-color: #0b0e14; color: #fff; text-align: center; padding: 20px; }
+        
+        header { padding: 40px 0 20px; }
+        header h1 { color: #53fc18; font-size: 3rem; font-weight: 900; text-shadow: 0 0 15px rgba(83, 252, 24, 0.4); margin-bottom: 10px; }
+        header p { color: #9da8b6; font-size: 1.2rem; }
+
+        .container { max-width: 1000px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+        
+        .card { background: #151a23; border: 1px solid #222b3a; border-radius: 16px; padding: 25px; width: 310px; box-shadow: 0 8px 25px rgba(0,0,0,0.6); display: flex; flex-direction: column; justify-content: space-between; transition: 0.3s ease; }
+        .card:hover { border-color: #53fc18; transform: translateY(-6px); box-shadow: 0 10px 30px rgba(83, 252, 24, 0.2); }
+        .card h3 { color: #fff; font-size: 1.5rem; margin-bottom: 10px; }
+        .price-badge { background: rgba(83, 252, 24, 0.1); color: #53fc18; border: 1px solid #53fc18; padding: 8px 12px; border-radius: 8px; font-weight: bold; font-size: 1.1rem; margin: 15px 0; display: inline-block; }
+        .features { text-align: right; color: #a1b0cb; font-size: 0.95rem; margin-bottom: 20px; list-style: none; }
+        .features li { margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+
+        .order-section { margin-top: 50px; background: #151a23; padding: 35px; border-radius: 18px; max-width: 550px; margin-left: auto; margin-right: auto; border: 1px solid #53fc18; box-shadow: 0 10px 35px rgba(0,0,0,0.8); text-align: right; }
+        .order-section h2 { text-align: center; margin-bottom: 25px; color: #53fc18; font-size: 1.8rem; }
+        
+        /* تحسين صندوق طرق الدفع */
+        .payment-box { background: #1c2330; padding: 18px; border-radius: 12px; margin-bottom: 25px; border: 1px solid #2a3547; border-right: 5px solid #53fc18; }
+        .payment-box h4 { color: #53fc18; margin-bottom: 10px; font-size: 1.15rem; font-weight: 700; }
+        .payment-list { list-style: none; padding: 0; margin: 0; }
+        .payment-list li { color: #e2e8f0; font-size: 0.95rem; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .payment-list li span { color: #53fc18; font-weight: bold; }
+
+        label { display: block; color: #a1b0cb; font-size: 0.95rem; margin-top: 15px; margin-bottom: 6px; font-weight: bold; }
+        input, select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #2a3547; background: #0b0e14; color: #fff; font-size: 1rem; outline: none; transition: 0.2s; }
+        input:focus, select:focus { border-color: #53fc18; }
+
+        .total-price { background: rgba(83, 252, 24, 0.05); border: 1px dashed #53fc18; padding: 15px; border-radius: 10px; text-align: center; color: #53fc18; font-size: 1.3rem; font-weight: bold; margin: 25px 0 15px 0; }
+
+        button { background: #53fc18; color: #000; border: none; padding: 14px; width: 100%; border-radius: 8px; font-weight: 900; font-size: 1.1rem; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+        button:hover { background: #45d612; box-shadow: 0 0 15px rgba(83, 252, 24, 0.4); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>TYSON STORE 🚀</h1>
+        <p>المنصة الاحترافية الأولى لتطوير ودعم بثوث كيك (Kick)</p>
+    </header>
+
+    <div class="container">
+        <!-- باقة مشاهدات حية تدريجية -->
+        <div class="card">
+            <div>
+                <h3>مشاهدات بث حية (Drip-Feed)</h3>
+                <div class="price-badge">0.40$ / لكل 100 مشاهدة</div>
+                <ul class="features">
+                    <li>✔️ دخول تدريجي آمن للحفاظ على القناة</li>
+                    <li>✔️ دعم خيارات السميلات والتفاعل</li>
+                    <li>✔️ رفع ترتيب البث في القسم بشكل طبيعي</li>
+                    <li>✔️ ضمان كامل مدة البث المختارة</li>
+                </ul>
+            </div>
+            <button onclick="selectService('مشاهدات بث حية (Live Viewers)')">اختر هذه الخدمة</button>
+        </div>
+
+        <!-- باقة متابعين قناة -->
+        <div class="card">
+            <div>
+                <h3>متابعين قناة Kick</h3>
+                <div class="price-badge">خدمة مميزة وسريعة</div>
+                <ul class="features">
+                    <li>✔️ حسابات مرتبة بأسماء حقيقية</li>
+                    <li>✔️ سرعة وآمان تام في التنفيذ</li>
+                    <li>✔️ المساعدة في الشروط والتوثيق</li>
+                </ul>
+            </div>
+            <button onclick="selectService('متابعين قناة (Followers)')">اختر هذه الخدمة</button>
+        </div>
+    </div>
+
+    <!-- قسم إتمام الطلب -->
+    <div class="order-section">
+        <h2>إتمام الطلب الفوري 🛒</h2>
+        
+        <!-- قسم طرق الدفع المعدل والواضح -->
+        <div class="payment-box">
+            <h4>💳 طرق الدفع المتاحة المقبولة:</h4>
+            <ul class="payment-list">
+                <li><span>•</span> تحويل كليك المباشر (CliQ)</li>
+                <li><span>•</span> بايبال (PayPal)</li>
+                <li><span>•</span> باينانس بي (Binance Pay / USDT)</li>
+                <li><span>•</span> طرق دفع أخرى (يتم التنسيق عبر الديسكورد)</li>
+            </ul>
+        </div>
+
+        <label>الخدمة المختارة:</label>
+        <input type="text" id="serviceType" readonly value="اختر خدمة من الأعلى أولاً" style="color: #53fc18; font-weight: bold; text-align: center;">
+
+        <label>رابط قناتك أو البث المباشر (Kick Link):</label>
+        <input type="text" id="kickLink" placeholder="https://kick.com/your_channel">
+
+        <label>الكمية المطلوبة (عدد المشاهدين/المتابعين):</label>
+        <input type="number" id="quantity" placeholder="مثال: 500" oninput="calculatePrice()">
+
+        <label>مدة البث المباشر (بالساعات):</label>
+        <select id="streamDuration">
+            <option value="ساعة واحدة">ساعة واحدة</option>
+            <option value="ساعتين">ساعتين</option>
+            <option value="3 ساعات">3 ساعات</option>
+            <option value="4 ساعات أو أكثر">4 ساعات أو أكثر</option>
+        </select>
+
+        <label>تفاعل البوتات (السميلات / التعليقات):</label>
+        <select id="interactionType">
+            <option value="بدون تفاعل (مشاهدات فقط)">بدون تفاعل (مشاهدات فقط)</option>
+            <option value="تفاعل خفيف (سمايلات حية)">تفاعل خفيف (سمايلات حية)</option>
+            <option value="تفاعل مكثف (سمايلات + تعليقات)">تفاعل مكثف (سمايلات + تعليقات)</option>
+        </select>
+        
+        <div class="total-price" id="totalPriceDisplay">الإجمالي المتوقع: 0.00$</div>
+
+        <button onclick="sendOrderToDiscord()">إرسال الطلب إلى الديسكورد ⚡</button>
+    </div>
+
+    <script>
+        function selectService(serviceName) {
+            document.getElementById('serviceType').value = serviceName;
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            calculatePrice();
+        }
+
+        function calculatePrice() {
+            let qty = document.getElementById('quantity').value;
+            let service = document.getElementById('serviceType').value;
+            let display = document.getElementById('totalPriceDisplay');
+
+            if (service.includes('مشاهدات') && qty > 0) {
+                // حساب 0.40 دولار لكل 100 مشاهدة
+                let total = (qty / 100) * 0.40;
+                display.innerText = "الإجمالي المتوقع: " + total.toFixed(2) + "$";
+            } else if (service.includes('متابعين')) {
+                display.innerText = "الإجمالي المتوقع: بحسب الاتفاق والكمية";
+            } else {
+                display.innerText = "الإجمالي المتوقع: 0.00$";
+            }
+        }
+
+        async function sendOrderToDiscord() {
+            const webhookUrl = "https://discord.com/api/webhooks/1565097335309082764/F3oST7Q0d9O3NPjrY7KoqYXEDABrwrqVCnVszsk6nY5DdmfN70GxtY7M4SlpjLhr_n-u";
+            
+            const service = document.getElementById('serviceType').value;
+            const link = document.getElementById('kickLink').value;
+            const qty = document.getElementById('quantity').value;
+            const duration = document.getElementById('streamDuration').value;
+            const interaction = document.getElementById('interactionType').value;
+            const priceText = document.getElementById('totalPriceDisplay').innerText;
+
+            if (service.includes('اختر خدمة') || !link || !qty) {
+                alert('الرجاء اختيار الخدمة، وإدخال رابط القناة والكمية بشكل صحيح!');
+                return;
+            }
+
+            const payload = {
+                content: "🚨 **طلب جديد واصل إلى متجر TYSON STORE الاحترافي!**",
+                embeds: [{
+                    title: "تفاصيل الطلب الجديد:",
+                    color: 5504024,
+                    fields: [
+                        { name: "⚡ الخدمة المختارة", value: service, inline: false },
+                        { name: "🔗 رابط القناة / البث", value: link, inline: false },
+                        { name: "📊 الكمية المطلوبة", value: qty, inline: true },
+                        { name: "⏱️ مدة البث", value: duration, inline: true },
+                        { name: "💬 نوع التفاعل المطلوب", value: interaction, inline: false },
+                        { name: "💰 السعر الإجمالي", value: priceText, inline: true }
+                    ],
+                    timestamp: new Date().toISOString()
+                }]
+            };
+
+            try {
+                let response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    alert('تم إرسال طلبك بنجاح! سيتم التواصل معك عبر الديسكورد لتأكيد الدفع والتنفيذ.');
+                    document.getElementById('kickLink').value = '';
+                    document.getElementById('quantity').value = '';
+                    document.getElementById('serviceType').value = 'اختر خدمة من الأعلى أولاً';
+                    document.getElementById('totalPriceDisplay').innerText = 'الإجمالي المتوقع: 0.00$';
+                } else {
+                    alert('حدث خطأ أثناء إرسال الطلب، يرجى المحاولة لاحقاً.');
+                }
+            } catch (error) {
+                console.error(error);
+                alert('تعذر الاتصال بالخادم.');
+            }
+        }
+    </script>
+</body>
+</html>
