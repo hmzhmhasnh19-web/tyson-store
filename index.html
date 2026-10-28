@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TYSON STORE | متجر خدمات كيك</title>
+    <style>
+        body { font-family: Tahoma, sans-serif; background: #0e0e10; color: #fff; text-align: center; padding: 50px; }
+        .card { background: #18181b; padding: 30px; border-radius: 12px; display: inline-block; width: 350px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        input, select { width: 100%; padding: 12px; margin: 10px 0; border-radius: 6px; border: 1px solid #27272a; background: #27272a; color: #fff; box-sizing: border-box; }
+        button { background: #9146ff; color: #fff; border: none; padding: 12px; width: 100%; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        button:hover { background: #772ce8; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>TYSON STORE 🚀</h2>
+        <p>اطلب خدمات بثوث كيك الآن بسهولة</p>
+        
+        <input type="text" id="kickLink" placeholder="رابط قناة كيك (Kick Link)">
+        
+        <select id="serviceType">
+            <option value="مشاهدات بث حية (Live Viewers)">مشاهدات بث حية (Live Viewers)</option>
+            <option value="متابعين قناة (Followers)">متابعين قناة (Followers)</option>
+        </select>
+
+        <input type="number" id="quantity" placeholder="الكمية المطلوبة (مثال: 100)">
+
+        <button onclick="sendOrderToDiscord()">تأكيد وإرسال الطلب</button>
+    </div>
+
+    <script>
+        async function sendOrderToDiscord() {
+            const webhookUrl = "https://discord.com/api/webhooks/1565097335309082764/F3oST7Q0d9O3NPjrY7KoqYXEDABrwrqVCnVszsk6nY5DdmfN70GxtY7M4SlpjLhr_n-u";
+            
+            const link = document.getElementById('kickLink').value;
+            const service = document.getElementById('serviceType').value;
+            const qty = document.getElementById('quantity').value;
+
+            if (!link || !qty) {
+                alert('الرجاء إدخال رابط القناة والكمية!');
+                return;
+            }
+
+            const payload = {
+                content: "🚨 **طلب جديد وصل إلى متجر TYSON STORE!**",
+                embeds: [{
+                    title: "تفاصيل الطلب:",
+                    color: 9529343,
+                    fields: [
+                        { name: "🔗 رابط القناة", value: link, inline: false },
+                        { name: "⚡ الخدمة", value: service, inline: true },
+                        { name: "📊 الكمية", value: qty, inline: true }
+                    ],
+                    timestamp: new Date().toISOString()
+                }]
+            };
+
+            try {
+                let response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    alert('تم إرسال طلبك بنجاح! سيتم تنفيذ طلبك فور تأكيد الدفع.');
+                    document.getElementById('kickLink').value = '';
+                    document.getElementById('quantity').value = '';
+                } else {
+                    alert('حدث خطأ أثناء إرسال الطلب، يرجى المحاولة لاحقاً.');
+                }
+            } catch (error) {
+                console.error(error);
+                alert('تعذر الاتصال بالخادم.');
+            }
+        }
+    </script>
+
+</body>
+</html>
