@@ -239,9 +239,9 @@
                     <select id="live-duration" onchange="calculateLive()">
                         <option value="8.0">60 دقيقة - (ساعة واحدة)</option>
                         <option value="15.0">120 دقيقة - (ساعتان)</option>
-                        <option value="22.0">180 دقيقة - (3 ساعات)</option>
-                        <option value="28.0">240 دقيقة - (4 ساعات)</option>
-                        <option value="34.0">300 دقيقة - (5 ساعات)</option>
+                        <option value="30.0">180 دقيقة - (3 ساعات) - [$1.50 لـ 50 مشاهد]</option>
+                        <option value="40.0">240 دقيقة - (4 ساعات)</option>
+                        <option value="50.0">300 دقيقة - (5 ساعات)</option>
                     </select>
                 </div>
 
@@ -328,8 +328,7 @@
             
             <div style="margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 15px;">
                 <p style="margin-bottom: 5px;">تحتاج مساعدة أو لديك استفسار؟ انضم لسيرفر الديسكورد الخاص بنا:</p>
-                <!-- تم ربط سيرفر الديسكورد الخاص بك مباشرة -->
-                <a href="https://discord.gg/mexico" target="_blank" class="btn-discord-join">
+                <a href="https://discord.gg/ScvSyWA8K" target="_blank" class="btn-discord-join">
                     <i class="fa-brands fa-discord"></i> انضم إلى سيرفر ديسكورد (ABH Store)
                 </a>
             </div>
@@ -402,7 +401,7 @@
 
             if(serviceName === 'مشاهدات بث مباشر') {
                 amount = document.getElementById('live-total').innerText.replace('$', '');
-                quantity = document.getElementById('live-quantity').value + " مشاهدين";
+                quantity = document.getElementById('live-quantity').value + " مشاهدين (" + document.getElementById('live-duration').selectedOptions[0].text + ")";
             } else if(serviceName === 'متابعين') {
                 amount = document.getElementById('follower-total').innerText.replace('$', '');
                 quantity = document.getElementById('follower-quantity').value + " متابع";
