@@ -194,7 +194,7 @@
     <div class="container">
         <div class="grid">
             
-            <!-- 1. حاسبة مشاهدات اللايف -->
+            <!-- 1. حاسبة مشاهدات اللايف (الـ 50 بـ 0.40$) -->
             <div class="card">
                 <div class="card-header">
                     <i class="fa-solid fa-eye"></i>
@@ -256,7 +256,7 @@
                 </button>
             </div>
 
-            <!-- 3. حاسبة تفاعل التعليقات للشات -->
+            <!-- 3. تفاعل تعليقات الشات (سعر خاص) -->
             <div class="card">
                 <div class="card-header">
                     <i class="fa-solid fa-comments"></i>
@@ -265,23 +265,23 @@
 
                 <div class="form-group">
                     <label>نوع التفاعل:</label>
-                    <select id="chat-type">
-                        <option value="4.0">تفاعل تعليقات تلقائية (لكل 1000 تعليق)</option>
+                    <select id="chat-type" onchange="calculateChat()">
+                        <option value="custom">تفاعل تعليقات الشات (خدمة خاصة / حسب الطلب)</option>
                     </select>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" id="chat-qty-group" style="display: none;">
                     <label>الكمية المطلوب شراءها:</label>
-                    <input type="number" id="chat-quantity" value="500" min="1" oninput="calculateChat()">
+                    <input type="number" id="chat-quantity" value="500" min="1">
                 </div>
 
                 <div class="price-display">
                     <span>السعر الإجمالي:</span>
-                    <strong id="chat-total">$2.00</strong>
+                    <strong id="chat-total">خدمة خاصة</strong>
                 </div>
 
-                <button class="btn-paypal" onclick="payNow('تعليقات الشات')">
-                    <i class="fa-brands fa-paypal"></i> اطلب الآن وادفع عبر PayPal
+                <button class="btn-paypal" id="chat-btn" onclick="payNow('تعليقات الشات')">
+                    <i class="fa-solid fa-envelope"></i> تواصل معنا للطلب الخاص
                 </button>
             </div>
 
@@ -291,7 +291,7 @@
         <div class="paypal-info">
             <h3><i class="fa-brands fa-paypal" style="color:#0079C1;"></i> طريقة الدفع والتأكيد:</h3>
             <p>عند الضغط على خيار الدفع، يمكنك التحويل المباشر إلى بريد PayPal الخاص بنا:</p>
-            <p style="margin-top:8px;">حساب الاستقبال: <code>hmzhmhasnh19@gmail.com</code></p>
+            <p style="margin-top:8px;">حساب الاستقبال: <code>hmzhmhasnh19@gmail.com</code>[cite: 1]</p>
             <p style="margin-top:8px; font-size:0.88rem; color:var(--text-muted);">* يرجى إضافة رابط قناة Kick الخاصة بك في ملاحظات التحويل لضمان بدء التنفيذ الفوري.</p>
         </div>
     </div>
@@ -315,10 +315,10 @@
         }
 
         function calculateChat() {
-            const pricePerThousand = parseFloat(document.getElementById('chat-type').value);
-            const quantity = parseInt(document.getElementById('chat-quantity').value) || 0;
-            const total = ((pricePerThousand / 1000) * quantity).toFixed(2);
-            document.getElementById('chat-total').innerText = '$' + total;
+            // تفاعل الشات صار خدمة خاصة
+            document.getElementById('chat-qty-group').style.display = 'none';
+            document.getElementById('chat-total').innerText = 'خدمة خاصة';
+            document.getElementById('chat-btn').innerHTML = '<i class="fa-solid fa-envelope"></i> تواصل معنا للطلب الخاص';
         }
 
         window.onload = function() {
@@ -338,7 +338,7 @@
                     fields: [
                         { name: "الخدمة", value: serviceName, inline: true },
                         { name: "الكمية / التفاصيل", value: quantity.toString(), inline: true },
-                        { name: "المبلغ المطلوبة تحويله", value: `$${amount}`, inline: false }
+                        { name: "المبلغ المطلوب تحويله", value: `$${amount}`, inline: false }
                     ],
                     footer: { text: "ABH Store System" },
                     timestamp: new Date()
@@ -353,6 +353,11 @@
         }
 
         function payNow(serviceName) {
+            if(serviceName === 'تعليقات الشات') {
+                alert('خدمة تفاعل الشات يتم التنسيق لها بشكل خاص. يرجى التواصل معنا عبر سيرفر الديسكورد (ABH Store) لترتيب تفاصيل الطلب.');
+                return;
+            }
+
             let amount = "0";
             let quantity = "";
 
@@ -362,9 +367,6 @@
             } else if(serviceName === 'متابعين') {
                 amount = document.getElementById('follower-total').innerText.replace('$', '');
                 quantity = document.getElementById('follower-quantity').value + " متابع";
-            } else if(serviceName === 'تعليقات الشات') {
-                amount = document.getElementById('chat-total').innerText.replace('$', '');
-                quantity = document.getElementById('chat-quantity').value + " تعليق";
             }
             
             // إرسال إشعار لسيرفر ABH Store في الديسكورد
