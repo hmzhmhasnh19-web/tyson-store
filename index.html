@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kick Boost - متجر خدمات كيك الاحترافي</title>
+    <title>ABH Store - Kick Boost Services</title>
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Font Cairo -->
@@ -187,7 +187,7 @@
 <body>
 
     <header>
-        <h1><i class="fa-solid fa-bolt"></i> Kick Boost Store</h1>
+        <h1><i class="fa-solid fa-bolt"></i> ABH Store - Kick Services</h1>
         <p>المنصة الأسرع والأفضل لتزويد وتنمية حسابات كيك (Kick) باحترافية</p>
     </header>
 
@@ -297,7 +297,9 @@
     </div>
 
     <script>
-        // حساب المشاهدات: سعر الـ 1,000 مشاهدة لـ 60 دقيقة هو 8.00$ (يعني 50 مشاهدة بـ 0.40$)
+        // ضع رابط الـ Webhook الخاص بسيرفر ABH Store هنا
+        const DISCORD_WEBHOOK_URL = "YOUR_DISCORD_WEBHOOK_URL_HERE";
+
         function calculateLive() {
             const pricePerThousand = parseFloat(document.getElementById('live-duration').value);
             const quantity = parseInt(document.getElementById('live-quantity').value) || 0;
@@ -325,16 +327,50 @@
             calculateChat();
         };
 
+        function sendDiscordNotification(serviceName, amount, quantity) {
+            if (DISCORD_WEBHOOK_URL === "YOUR_DISCORD_WEBHOOK_URL_HERE") return;
+
+            const payload = {
+                username: "ABH Store Order Bot",
+                embeds: [{
+                    title: "🛒 طلب جديد في المتجر!",
+                    color: 5504024,
+                    fields: [
+                        { name: "الخدمة", value: serviceName, inline: true },
+                        { name: "الكمية / التفاصيل", value: quantity.toString(), inline: true },
+                        { name: "المبلغ المطلوبة تحويله", value: `$${amount}`, inline: false }
+                    ],
+                    footer: { text: "ABH Store System" },
+                    timestamp: new Date()
+                }]
+            };
+
+            fetch(DISCORD_WEBHOOK_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            }).catch(err => console.log(err));
+        }
+
         function payNow(serviceName) {
             let amount = "0";
+            let quantity = "";
+
             if(serviceName === 'مشاهدات بث مباشر') {
                 amount = document.getElementById('live-total').innerText.replace('$', '');
+                quantity = document.getElementById('live-quantity').value + " مشاهدين";
             } else if(serviceName === 'متابعين') {
                 amount = document.getElementById('follower-total').innerText.replace('$', '');
+                quantity = document.getElementById('follower-quantity').value + " متابع";
             } else if(serviceName === 'تعليقات الشات') {
                 amount = document.getElementById('chat-total').innerText.replace('$', '');
+                quantity = document.getElementById('chat-quantity').value + " تعليق";
             }
             
+            // إرسال إشعار لسيرفر ABH Store في الديسكورد
+            sendDiscordNotification(serviceName, amount, quantity);
+
+            // فتح صفحة PayPal للزبون
             const email = "hmzhmhasnh19@gmail.com";
             const paypalUrl = `https://www.paypal.com/myaccount/transfer/homepage/external/send?recipient=${encodeURIComponent(email)}&amount=${amount}`;
             window.open(paypalUrl, '_blank');
