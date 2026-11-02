@@ -132,40 +132,6 @@
             border-color: var(--accent-green);
         }
 
-        /* صندوق رفع الفاتورة */
-        .file-upload-box {
-            border: 2px dashed var(--border-color);
-            padding: 12px;
-            border-radius: 8px;
-            text-align: center;
-            background: #0b0e0f;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .file-upload-box:hover {
-            border-color: var(--accent-green);
-        }
-
-        .file-upload-box input[type="file"] {
-            display: none;
-        }
-
-        .file-upload-label {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .file-upload-label i {
-            color: var(--accent-green);
-        }
-
-        /* لوحة التحكم المصغرة (داشبورد الطلب) */
         .order-dashboard {
             background: #0d1214;
             border: 1px solid var(--border-color);
@@ -259,49 +225,6 @@
             box-shadow: 0 0 15px rgba(0, 121, 193, 0.4);
         }
 
-        /* قسم رفع إيصال الدفع المنفصل */
-        .receipt-section {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 25px;
-            margin-top: 30px;
-            border-right: 4px solid #0079C1;
-        }
-
-        .receipt-section h3 {
-            color: #fff;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .receipt-section h3 i {
-            color: #0079C1;
-        }
-
-        .btn-submit-receipt {
-            display: block;
-            width: 100%;
-            background-color: #0079C1;
-            color: #fff;
-            font-weight: 700;
-            font-size: 1.1rem;
-            text-align: center;
-            padding: 14px;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            transition: 0.2s;
-            margin-top: 15px;
-        }
-
-        .btn-submit-receipt:hover {
-            background-color: #005a91;
-            box-shadow: 0 0 15px rgba(0, 121, 193, 0.4);
-        }
-
         .paypal-info {
             background: #192026;
             border-radius: 12px;
@@ -355,7 +278,7 @@
     <div class="container">
         <div class="grid">
             
-            <!-- 1. حاسبة مشاهدات اللايف -->
+            <!-- 1. مشاهدات البث المباشر -->
             <div class="card">
                 <div class="card-header">
                     <i class="fa-solid fa-eye"></i>
@@ -413,7 +336,7 @@
                 </div>
             </div>
 
-            <!-- 2. حاسبة المتابعين -->
+            <!-- 2. المتابعين -->
             <div class="card">
                 <div class="card-header">
                     <i class="fa-solid fa-users"></i>
@@ -483,47 +406,11 @@
 
         </div>
 
-        <!-- قسم منفصل مخصص لإرسال صورة عملية الدفع أو الإيصال بعد إتمام الدفع -->
-        <div class="receipt-section">
-            <h3><i class="fa-solid fa-file-invoice-dollar"></i> أرسل صورة إيصال الدفع (بعد إتمام التحويل):</h3>
-            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 15px;">إذا قمت بالتحويل عبر كليك (CliQ) أو باي بال، يرجى تعبئة تفاصيلك ورفع صورة الإيصال ليتم إرسالها للتحقق وتنفيذ طلبك فوراً.</p>
-            
-            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
-                <div class="form-group" style="margin-bottom: 0;">
-                    <label>اسم الخدمة المطلوبة:</label>
-                    <select id="receipt-service">
-                        <option value="مشاهدات بث مباشر">مشاهدات بث مباشر</option>
-                        <option value="متابعين">متابعين كيك</option>
-                        <option value="خدمة أخرى / شات">خدمة أخرى / شات</option>
-                    </select>
-                </div>
-                <div class="form-group" style="margin-bottom: 0;">
-                    <label>رابط قناتك على كليك / كيك:</label>
-                    <input type="text" id="receipt-channel-link" placeholder="https://kick.com/your-channel">
-                </div>
-            </div>
-
-            <div class="form-group" style="margin-top: 15px;">
-                <label>صورة عملية الدفع أو الإيصال (Screenshot):</label>
-                <div class="file-upload-box" onclick="document.getElementById('payment-receipt-file').click()">
-                    <label class="file-upload-label" id="receipt-file-label">
-                        <i class="fa-solid fa-cloud-arrow-up"></i> اضغط لاختيار صورة إيصال التحويل من جهازك
-                    </label>
-                    <input type="file" id="payment-receipt-file" accept="image/*" onchange="updateReceiptFileName()">
-                </div>
-            </div>
-
-            <button class="btn-submit-receipt" onclick="submitReceiptOrder()">
-                <i class="fa-solid fa-paper-plane"></i> إرسال إيصال الدفع وتأكيد الطلب
-            </button>
-        </div>
-
         <!-- معلومات الدعم والتحويل -->
         <div class="paypal-info">
             <h3><i class="fa-solid fa-wallet" style="color:var(--accent-green);"></i> طرق الدفع المتاحة:</h3>
             <p>حساب PayPal: <code>hmzhmhasnh19@gmail.com</code></p>
             <p style="margin-top: 8px;">رقم الدفع عبر كليك (CliQ): <code style="color: #0079C1;">0790740659</code></p>
-            <p style="margin-top:8px; font-size:0.88rem; color:var(--text-muted);">* بعد إتمام الدفع، توجه للقسم بالأعلى لرفع صورة الإيصال وسيصلنا فوراً في ديسكورد.</p>
             
             <div style="margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 15px;">
                 <p style="margin-bottom: 5px;">تحتاج مساعدة أو لديك استفسار؟ انضم لسيرفر الديسكورد الخاص بنا:</p>
@@ -536,14 +423,6 @@
 
     <script>
         const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1566415682663612416/kZ5LxDZtCZgNdTD6dtyK-fgaFJSsu85xsjKwhS5DLBLkd0U3-cnW1PQFvQSK8Z-xpcoN";
-
-        function updateReceiptFileName() {
-            const input = document.getElementById('payment-receipt-file');
-            const label = document.getElementById('receipt-file-label');
-            if (input.files && input.files[0]) {
-                label.innerHTML = `<i class="fa-solid fa-check" style="color:var(--accent-green);"></i> تم اختيار الإيصال: ${input.files[0].name}`;
-            }
-        }
 
         function calculateLive() {
             const durationSelect = document.getElementById('live-duration');
@@ -578,24 +457,22 @@
             calculateChat();
         };
 
-        function sendDiscordNotification(serviceName, amount, quantity, channelLink, paymentMethod, receiptAttached) {
+        function sendDiscordNotification(serviceName, amount, quantity, channelLink, paymentMethod) {
             if (!DISCORD_WEBHOOK_URL) return;
 
             const payload = {
                 username: "ABH Store Order Bot",
                 embeds: [{
-                    title: "🛒 طلب جديد مع إيصال الدفع!",
+                    title: "🛒 طلب جديد في المتجر!",
                     color: paymentMethod === 'cliq' ? 309279 : 5504024,
                     fields: [
-                        { name: "المالك والمطور", value: "Tyson (tt7)", inline: false },
                         { name: "الخدمة المطلوبة", value: serviceName, inline: true },
                         { name: "طريقة الدفع", value: paymentMethod === 'cliq' ? "CliQ (0790740659)" : "PayPal", inline: true },
-                        { name: "صورة الإيصال مرفقة", value: receiptAttached ? "نعم (تم إرفاق صورة الدفع)" : "لم يتم إرفاق صورة", inline: true },
                         { name: "الكمية / التفاصيل", value: quantity.toString(), inline: true },
                         { name: "رابط القناة المستهدفة", value: channelLink || "لم يتم إدخال الرابط", inline: false },
                         { name: "المبلغ الإجمالي", value: `$${amount}`, inline: false }
                     ],
-                    footer: { text: "ABH Store • Managed by Tyson (tt7)" },
+                    footer: { text: "ABH Store • Tyson (tt7)" },
                     timestamp: new Date()
                 }]
             };
@@ -609,7 +486,7 @@
 
         function payNow(serviceName, method) {
             if(serviceName === 'تعليقات الشات') {
-                alert('خدمة تفاعل الشات يتم التنسيق لها بشكل خاص. يرجى التواصل معنا عبر سيرفر الديسكورد (ABH Store) لترتيب تفاصيل الطلب.');
+                alert('خدمة تفاعل الشات يتم التنسيق لها عبر سيرفر الديسكورد.');
                 return;
             }
 
@@ -639,42 +516,17 @@
                 quantity = document.getElementById('follower-quantity').value + " متابع";
             }
 
+            // إرسال البيانات للديسكورد فوراً بصمت وبدون إزعاج
+            sendDiscordNotification(serviceName, amount, quantity, channelLink, method);
+
+            // توجيه الزبون للدفع مباشرة
             if (method === 'paypal') {
                 const email = "hmzhmhasnh19@gmail.com";
                 const paypalUrl = `https://www.paypal.com/myaccount/transfer/homepage/external/send?recipient=${encodeURIComponent(email)}&amount=${amount}`;
                 window.open(paypalUrl, '_blank');
-                alert('بعد إتمام الدفع عبر PayPal، يرجى النزول إلى أسفل الصفحة (قسم إرسال إيصال الدفع) لرفع صورة الإيصال وإرسال الطلب!');
             } else if (method === 'cliq') {
-                alert('رقم التحويل عبر كليك (CliQ) هو:\n0790740659\n\nبعد إتمام التحويل، يرجى النزول إلى أسفل الصفحة ورفع صورة الإيصال في قسم "إرسال إيصال الدفع" لتأكيد طلبك فوراً.');
-                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                alert(`تم إرسال تفاصيل طلبك إلينا بنجاح!\n\nيرجى تحويل مبلغ ($${amount}) عبر كليك (CliQ) إلى الرقم:\n0790740659`);
             }
-        }
-
-        function submitReceiptOrder() {
-            const service = document.getElementById('receipt-service').value;
-            const channelLink = document.getElementById('receipt-channel-link').value.trim();
-            const receiptFile = document.getElementById('payment-receipt-file').files[0];
-
-            if(!channelLink) {
-                alert('يرجى إدخال رابط قناتك!');
-                document.getElementById('receipt-channel-link').focus();
-                return;
-            }
-
-            if(!receiptFile) {
-                alert('يرجى اختيار صورة إيصال التحويل أولاً!');
-                return;
-            }
-
-            // إرسال الإشعار لديسكورد
-            sendDiscordNotification(service, "حسب الطلب/تم التحويل", "طلب مرفق بإيصال", channelLink, "cliq", true);
-
-            alert('تم إرسال إيصال الدفع وتفاصيل طلبك بنجاح إلى ديسكورد!\nسيقوم فريق الدعم بمراجعة الإيصال وبدء التنفيذ فوراً.');
-            
-            // إعادة تعيين الحقول
-            document.getElementById('receipt-channel-link').value = '';
-            document.getElementById('payment-receipt-file').value = '';
-            document.getElementById('receipt-file-label').innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> اضغط لاختيار صورة إيصال التحويل من جهازك';
         }
     </script>
 </body>
