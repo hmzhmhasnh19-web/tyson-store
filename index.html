@@ -204,22 +204,22 @@
                 <div class="form-group">
                     <label>مدة المشاهدة (بالدقائق):</label>
                     <select id="live-duration" onchange="calculateLive()">
-                        <option value="4.5">60 دقيقة - (ساعة واحدة)</option>
-                        <option value="8.5">120 دقيقة - (ساعتان)</option>
-                        <option value="12.5">180 دقيقة - (3 ساعات)</option>
-                        <option value="16.5">240 دقيقة - (4 ساعات)</option>
-                        <option value="19.5">300 دقيقة - (5 ساعات)</option>
+                        <option value="8.0">60 دقيقة - (ساعة واحدة)</option>
+                        <option value="15.0">120 دقيقة - (ساعتان)</option>
+                        <option value="22.0">180 دقيقة - (3 ساعات)</option>
+                        <option value="28.0">240 دقيقة - (4 ساعات)</option>
+                        <option value="34.0">300 دقيقة - (5 ساعات)</option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label>عدد المشاهدين (لكل 1,000):</label>
-                    <input type="number" id="live-quantity" value="100" min="1" oninput="calculateLive()">
+                    <label>عدد المشاهدين المطلوبة:</label>
+                    <input type="number" id="live-quantity" value="50" min="1" oninput="calculateLive()">
                 </div>
 
                 <div class="price-display">
                     <span>السعر الإجمالي:</span>
-                    <strong id="live-total">$0.45</strong>
+                    <strong id="live-total">$0.40</strong>
                 </div>
 
                 <button class="btn-paypal" onclick="payNow('مشاهدات بث مباشر')">
@@ -297,7 +297,7 @@
     </div>
 
     <script>
-        // حساب المشاهدات بناء على الكمية المدخلة لكل 1000
+        // حساب المشاهدات: سعر الـ 1,000 مشاهدة لـ 60 دقيقة هو 8.00$ (يعني 50 مشاهدة بـ 0.40$)
         function calculateLive() {
             const pricePerThousand = parseFloat(document.getElementById('live-duration').value);
             const quantity = parseInt(document.getElementById('live-quantity').value) || 0;
@@ -305,7 +305,6 @@
             document.getElementById('live-total').innerText = '$' + total;
         }
 
-        // حساب المتابعين بناء على الكمية المدخلة لكل 1000
         function calculateFollowers() {
             const pricePerThousand = parseFloat(document.getElementById('follower-type').value);
             const quantity = parseInt(document.getElementById('follower-quantity').value) || 0;
@@ -313,7 +312,6 @@
             document.getElementById('follower-total').innerText = '$' + total;
         }
 
-        // حساب تفاعل التعليقات بناء على الكمية المدخلة لكل 1000
         function calculateChat() {
             const pricePerThousand = parseFloat(document.getElementById('chat-type').value);
             const quantity = parseInt(document.getElementById('chat-quantity').value) || 0;
@@ -321,7 +319,6 @@
             document.getElementById('chat-total').innerText = '$' + total;
         }
 
-        // تشغيل الحسابات تلقائياً عند فتح الصفحة
         window.onload = function() {
             calculateLive();
             calculateFollowers();
