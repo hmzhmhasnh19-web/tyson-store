@@ -194,6 +194,26 @@
             color: var(--accent-green);
             font-weight: bold;
         }
+
+        .btn-discord-join {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background-color: #5865F2;
+            color: #fff;
+            font-weight: 700;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-top: 15px;
+            transition: 0.2s;
+        }
+
+        .btn-discord-join:hover {
+            background-color: #4752C4;
+            box-shadow: 0 0 15px rgba(88, 101, 242, 0.4);
+        }
     </style>
 </head>
 <body>
@@ -207,7 +227,7 @@
     <div class="container">
         <div class="grid">
             
-            <!-- 1. حاسبة مشاهدات اللايف (الـ 50 بـ 0.40$) -->
+            <!-- 1. حاسبة مشاهدات اللايف -->
             <div class="card">
                 <div class="card-header">
                     <i class="fa-solid fa-eye"></i>
@@ -269,7 +289,7 @@
                 </button>
             </div>
 
-            <!-- 3. تفاعل تعليقات الشات (سعر خاص) -->
+            <!-- 3. تفاعل تعليقات الشات -->
             <div class="card">
                 <div class="card-header">
                     <i class="fa-solid fa-comments"></i>
@@ -300,17 +320,23 @@
 
         </div>
 
-        <!-- معلومات التحويل المباشر لـ PayPal -->
+        <!-- معلومات الدعم والتحويل لـ PayPal -->
         <div class="paypal-info">
             <h3><i class="fa-brands fa-paypal" style="color:#0079C1;"></i> طريقة الدفع والتأكيد:</h3>
-            <p>عند الضغط على خيار الدفع، يمكنك التحويل المباشر إلى بريد PayPal الخاص بنا:</p>
-            <p style="margin-top:8px;">حساب الاستقبال: <code>hmzhmhasnh19@gmail.com</code></p>
+            <p>حساب الاستقبال: <code>hmzhmhasnh19@gmail.com</code>[cite: 1]</p>
             <p style="margin-top:8px; font-size:0.88rem; color:var(--text-muted);">* يرجى إضافة رابط قناة Kick الخاصة بك في ملاحظات التحويل لضمان بدء التنفيذ الفوري.</p>
+            
+            <div style="margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 15px;">
+                <p style="margin-bottom: 5px;">تحتاج مساعدة أو لديك استفسار؟ انضم لسيرفر الديسكورد الخاص بنا:</p>
+                <!-- تم ربط سيرفر الديسكورد الخاص بك مباشرة -->
+                <a href="https://discord.gg/mexico" target="_blank" class="btn-discord-join">
+                    <i class="fa-brands fa-discord"></i> انضم إلى سيرفر ديسكورد (ABH Store)
+                </a>
+            </div>
         </div>
     </div>
 
     <script>
-        // الـ Webhook الخاص بك
         const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1566415682663612416/kZ5LxDZtCZgNdTD6dtyK-fgaFJSsu85xsjKwhS5DLBLkd0U3-cnW1PQFvQSK8Z-xpcoN";
 
         function calculateLive() {
@@ -382,10 +408,8 @@
                 quantity = document.getElementById('follower-quantity').value + " متابع";
             }
             
-            // إرسال الإشعار للديسكورد
             sendDiscordNotification(serviceName, amount, quantity);
 
-            // فتح صفحة PayPal للزبون
             const email = "hmzhmhasnh19@gmail.com";
             const paypalUrl = `https://www.paypal.com/myaccount/transfer/homepage/external/send?recipient=${encodeURIComponent(email)}&amount=${amount}`;
             window.open(paypalUrl, '_blank');
