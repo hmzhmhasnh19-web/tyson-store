@@ -183,26 +183,47 @@
             color: var(--accent-green);
         }
 
-        .btn-paypal {
-            display: block;
-            width: 100%;
-            background-color: var(--accent-green);
-            color: #000;
+        .payment-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-payment {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
             font-weight: 700;
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             text-align: center;
-            padding: 14px;
+            padding: 12px 8px;
             border-radius: 8px;
             text-decoration: none;
-            margin-top: 15px;
             transition: 0.2s;
             cursor: pointer;
             border: none;
         }
 
+        .btn-paypal {
+            background-color: var(--accent-green);
+            color: #000;
+        }
+
         .btn-paypal:hover {
             background-color: var(--accent-hover);
             box-shadow: 0 0 15px rgba(83, 252, 24, 0.4);
+        }
+
+        .btn-cliq {
+            background-color: #0079C1;
+            color: #fff;
+        }
+
+        .btn-cliq:hover {
+            background-color: #005a91;
+            box-shadow: 0 0 15px rgba(0, 121, 193, 0.4);
         }
 
         .paypal-info {
@@ -307,9 +328,14 @@
                     <strong id="live-total">$0.40</strong>
                 </div>
 
-                <button class="btn-paypal" onclick="payNow('مشاهدات بث مباشر')">
-                    <i class="fa-brands fa-paypal"></i> اطلب الآن وادفع عبر PayPal
-                </button>
+                <div class="payment-buttons">
+                    <button class="btn-payment btn-paypal" onclick="payNow('مشاهدات بث مباشر', 'paypal')">
+                        <i class="fa-brands fa-paypal"></i> PayPal
+                    </button>
+                    <button class="btn-payment btn-cliq" onclick="payNow('مشاهدات بث مباشر', 'cliq')">
+                        <i class="fa-solid fa-mobile-screen-button"></i> دفع CliQ
+                    </button>
+                </div>
             </div>
 
             <!-- 2. حاسبة المتابعين -->
@@ -341,9 +367,14 @@
                     <strong id="follower-total">$5.00</strong>
                 </div>
 
-                <button class="btn-paypal" onclick="payNow('متابعين')">
-                    <i class="fa-brands fa-paypal"></i> اطلب الآن وادفع عبر PayPal
-                </button>
+                <div class="payment-buttons">
+                    <button class="btn-payment btn-paypal" onclick="payNow('متابعين', 'paypal')">
+                        <i class="fa-brands fa-paypal"></i> PayPal
+                    </button>
+                    <button class="btn-payment btn-cliq" onclick="payNow('متابعين', 'cliq')">
+                        <i class="fa-solid fa-mobile-screen-button"></i> دفع CliQ
+                    </button>
+                </div>
             </div>
 
             <!-- 3. تفاعل تعليقات الشات -->
@@ -370,18 +401,19 @@
                     <strong id="chat-total">خدمة خاصة</strong>
                 </div>
 
-                <button class="btn-paypal" id="chat-btn" onclick="payNow('تعليقات الشات')">
+                <button class="btn-payment btn-paypal" id="chat-btn" style="width: 100%; margin-top: 15px;" onclick="payNow('تعليقات الشات', 'paypal')">
                     <i class="fa-solid fa-envelope"></i> تواصل معنا للطلب الخاص
                 </button>
             </div>
 
         </div>
 
-        <!-- معلومات الدعم والتحويل لـ PayPal -->
+        <!-- معلومات الدعم والتحويل -->
         <div class="paypal-info">
-            <h3><i class="fa-brands fa-paypal" style="color:#0079C1;"></i> طريقة الدفع والتأكيد:</h3>
-            <p>حساب الاستقبال: <code>hmzhmhasnh19@gmail.com</code>[cite: 1]</p>
-            <p style="margin-top:8px; font-size:0.88rem; color:var(--text-muted);">* يرجى إدخال رابط القناة في حقل الطلب لضمان بدء التنفيذ الفوري.</p>
+            <h3><i class="fa-solid fa-wallet" style="color:var(--accent-green);"></i> طرق الدفع المتاحة والتأكيد:</h3>
+            <p>حساب PayPal: <code>hmzhmhasnh19@gmail.com</code></p>
+            <p style="margin-top: 8px;">رقم الدفع عبر كليك (CliQ): <code style="color: #0079C1;">0790740659</code></p>
+            <p style="margin-top:8px; font-size:0.88rem; color:var(--text-muted);">* يرجى إدخال رابط القناة في حقل الطلب وإرسال إيصال التحويل عبر ديسكورد لضمان بدء التنفيذ الفوري.</p>
             
             <div style="margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 15px;">
                 <p style="margin-bottom: 5px;">تحتاج مساعدة أو لديك استفسار؟ انضم لسيرفر الديسكورد الخاص بنا:</p>
@@ -428,20 +460,21 @@
             calculateChat();
         };
 
-        function sendDiscordNotification(serviceName, amount, quantity, channelLink) {
+        function sendDiscordNotification(serviceName, amount, quantity, channelLink, paymentMethod) {
             if (!DISCORD_WEBHOOK_URL) return;
 
             const payload = {
                 username: "ABH Store Order Bot",
                 embeds: [{
                     title: "🛒 طلب جديد في متجر ABH!",
-                    color: 5504024,
+                    color: paymentMethod === 'cliq' ? 309279 : 5504024,
                     fields: [
                         { name: "المالك والمطور", value: "Tyson (tt7)", inline: false },
                         { name: "الخدمة المطلوب شراءها", value: serviceName, inline: true },
+                        { name: "طريقة الدفع", value: paymentMethod === 'cliq' ? "CliQ (0790740659)" : "PayPal", inline: true },
                         { name: "الكمية / التفاصيل", value: quantity.toString(), inline: true },
                         { name: "رابط القناة المستهدفة", value: channelLink || "لم يتم إدخال الرابط", inline: false },
-                        { name: "المبلغ المطلوب تحويله", value: `$${amount}`, inline: false }
+                        { name: "المبلغ الإجمالي", value: `$${amount}`, inline: false }
                     ],
                     footer: { text: "ABH Store • Managed by Tyson (tt7)" },
                     timestamp: new Date()
@@ -455,7 +488,7 @@
             }).catch(err => console.log(err));
         }
 
-        function payNow(serviceName) {
+        function payNow(serviceName, method) {
             if(serviceName === 'تعليقات الشات') {
                 alert('خدمة تفاعل الشات يتم التنسيق لها بشكل خاص. يرجى التواصل معنا عبر سيرفر الديسكورد (ABH Store) لترتيب تفاصيل الطلب.');
                 return;
@@ -487,12 +520,16 @@
                 quantity = document.getElementById('follower-quantity').value + " متابع";
             }
             
-            // إرسال الإشعار للديسكورد شاملاً رابط القناة
-            sendDiscordNotification(serviceName, amount, quantity, channelLink);
+            // إرسال الإشعار للديسكورد مع تحديد طريقة الدفع
+            sendDiscordNotification(serviceName, amount, quantity, channelLink, method);
 
-            const email = "hmzhmhasnh19@gmail.com";
-            const paypalUrl = `https://www.paypal.com/myaccount/transfer/homepage/external/send?recipient=${encodeURIComponent(email)}&amount=${amount}`;
-            window.open(paypalUrl, '_blank');
+            if (method === 'paypal') {
+                const email = "hmzhmhasnh19@gmail.com";
+                const paypalUrl = `https://www.paypal.com/myaccount/transfer/homepage/external/send?recipient=${encodeURIComponent(email)}&amount=${amount}`;
+                window.open(paypalUrl, '_blank');
+            } else if (method === 'cliq') {
+                alert('تم تسجيل طلبك وإرسال التفاصيل إلى ديسكورد!\n\nيرجى تحويل مبلغ $' + amount + ' عبر نظام CliQ إلى الرقم:\n0790740659\nثم إرسال إيصال التحويل في سيرفر الديسكورد لتأكيد الطلب وبدء التنفيذ.');
+            }
         }
     </script>
 </body>
