@@ -132,6 +132,39 @@
             border-color: var(--accent-green);
         }
 
+        /* تنسيق حقل رفع الصورة */
+        .file-upload-box {
+            border: 2px dashed var(--border-color);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            background: #0b0e0f;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .file-upload-box:hover {
+            border-color: var(--accent-green);
+        }
+
+        .file-upload-box input[type="file"] {
+            display: none;
+        }
+
+        .file-upload-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .file-upload-label i {
+            color: var(--accent-green);
+        }
+
         /* لوحة التحكم المصغرة (داشبورد الطلب) */
         .order-dashboard {
             background: #0d1214;
@@ -279,7 +312,7 @@
     <div class="container">
         <div class="grid">
             
-            <!-- 1. حاسبة مشاهدات اللايف مع حقل رابط القناة والداشبورد -->
+            <!-- 1. حاسبة مشاهدات اللايف -->
             <div class="card">
                 <div class="card-header">
                     <i class="fa-solid fa-eye"></i>
@@ -306,7 +339,17 @@
                     <input type="number" id="live-quantity" value="50" min="1" oninput="calculateLive()">
                 </div>
 
-                <!-- داشبورد ملخص الطلب الحية -->
+                <!-- رفع صورة الفاتورة / الإيصال -->
+                <div class="form-group">
+                    <label>إرفاق صورة إيصال الدفع (اختياري / مطلوب للتحويل المحلي):</label>
+                    <div class="file-upload-box" onclick="document.getElementById('live-receipt').click()">
+                        <label class="file-upload-label" id="live-file-label">
+                            <i class="fa-solid fa-cloud-arrow-up"></i> اضغط هنا لرفع صورة الفاتورة أو الإيصال
+                        </label>
+                        <input type="file" id="live-receipt" accept="image/*" onchange="updateFileName('live-receipt', 'live-file-label')">
+                    </div>
+                </div>
+
                 <div class="order-dashboard">
                     <h4><i class="fa-solid fa-chart-line"></i> ملخص الطلب (Dashboard)</h4>
                     <div class="dash-row">
@@ -362,6 +405,17 @@
                     <input type="number" id="follower-quantity" value="1000" min="1" oninput="calculateFollowers()">
                 </div>
 
+                <!-- رفع صورة الفاتورة / الإيصال -->
+                <div class="form-group">
+                    <label>إرفاق صورة إيصال الدفع (اختياري / مطلوب للتحويل المحلي):</label>
+                    <div class="file-upload-box" onclick="document.getElementById('follower-receipt').click()">
+                        <label class="file-upload-label" id="follower-file-label">
+                            <i class="fa-solid fa-cloud-arrow-up"></i> اضغط هنا لرفع صورة الفاتورة أو الإيصال
+                        </label>
+                        <input type="file" id="follower-receipt" accept="image/*" onchange="updateFileName('follower-receipt', 'follower-file-label')">
+                    </div>
+                </div>
+
                 <div class="price-display">
                     <span>السعر الإجمالي:</span>
                     <strong id="follower-total">$5.00</strong>
@@ -413,7 +467,7 @@
             <h3><i class="fa-solid fa-wallet" style="color:var(--accent-green);"></i> طرق الدفع المتاحة والتأكيد:</h3>
             <p>حساب PayPal: <code>hmzhmhasnh19@gmail.com</code></p>
             <p style="margin-top: 8px;">رقم الدفع عبر كليك (CliQ): <code style="color: #0079C1;">0790740659</code></p>
-            <p style="margin-top:8px; font-size:0.88rem; color:var(--text-muted);">* يرجى إدخال رابط القناة في حقل الطلب وإرسال إيصال التحويل عبر ديسكورد لضمان بدء التنفيذ الفوري.</p>
+            <p style="margin-top:8px; font-size:0.88rem; color:var(--text-muted);">* يرجى إرفع صورة الإيصال أو إرسالها عبر سيرفر الديسكورد لضمان بدء التنفيذ الفوري.</p>
             
             <div style="margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 15px;">
                 <p style="margin-bottom: 5px;">تحتاج مساعدة أو لديك استفسار؟ انضم لسيرفر الديسكورد الخاص بنا:</p>
@@ -426,6 +480,14 @@
 
     <script>
         const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1566415682663612416/kZ5LxDZtCZgNdTD6dtyK-fgaFJSsu85xsjKwhS5DLBLkd0U3-cnW1PQFvQSK8Z-xpcoN";
+
+        function updateFileName(inputId, labelId) {
+            const input = document.getElementById(inputId);
+            const label = document.getElementById(labelId);
+            if (input.files && input.files[0]) {
+                label.innerHTML = `<i class="fa-solid fa-check" style="color:var(--accent-green);"></i> تم اختيار: ${input.files[0].name}`;
+            }
+        }
 
         function calculateLive() {
             const durationSelect = document.getElementById('live-duration');
@@ -460,7 +522,7 @@
             calculateChat();
         };
 
-        function sendDiscordNotification(serviceName, amount, quantity, channelLink, paymentMethod) {
+        function sendDiscordNotification(serviceName, amount, quantity, channelLink, paymentMethod, hasReceipt) {
             if (!DISCORD_WEBHOOK_URL) return;
 
             const payload = {
@@ -472,6 +534,7 @@
                         { name: "المالك والمطور", value: "Tyson (tt7)", inline: false },
                         { name: "الخدمة المطلوب شراءها", value: serviceName, inline: true },
                         { name: "طريقة الدفع", value: paymentMethod === 'cliq' ? "CliQ (0790740659)" : "PayPal", inline: true },
+                        { name: "إيصال الدفع مرفق", value: hasReceipt ? "نعم (تم إرفاق الملف)" : "لا", inline: true },
                         { name: "الكمية / التفاصيل", value: quantity.toString(), inline: true },
                         { name: "رابط القناة المستهدفة", value: channelLink || "لم يتم إدخال الرابط", inline: false },
                         { name: "المبلغ الإجمالي", value: `$${amount}`, inline: false }
@@ -497,6 +560,8 @@
             let amount = "0";
             let quantity = "";
             let channelLink = "";
+            let receiptInputId = serviceName === 'مشاهدات بث مباشر' ? 'live-receipt' : 'follower-receipt';
+            let receiptFile = document.getElementById(receiptInputId).files[0];
 
             if(serviceName === 'مشاهدات بث مباشر') {
                 channelLink = document.getElementById('live-channel-link').value.trim();
@@ -520,15 +585,15 @@
                 quantity = document.getElementById('follower-quantity').value + " متابع";
             }
             
-            // إرسال الإشعار للديسكورد مع تحديد طريقة الدفع
-            sendDiscordNotification(serviceName, amount, quantity, channelLink, method);
+            // إرسال الإشعار للديسكورد مع بيان ما إذا تم رفع إيصال الدفع
+            sendDiscordNotification(serviceName, amount, quantity, channelLink, method, !!receiptFile);
 
             if (method === 'paypal') {
                 const email = "hmzhmhasnh19@gmail.com";
                 const paypalUrl = `https://www.paypal.com/myaccount/transfer/homepage/external/send?recipient=${encodeURIComponent(email)}&amount=${amount}`;
                 window.open(paypalUrl, '_blank');
             } else if (method === 'cliq') {
-                alert('تم تسجيل طلبك وإرسال التفاصيل إلى ديسكورد!\n\nيرجى تحويل مبلغ $' + amount + ' عبر نظام CliQ إلى الرقم:\n0790740659\nثم إرسال إيصال التحويل في سيرفر الديسكورد لتأكيد الطلب وبدء التنفيذ.');
+                alert('تم تسجيل طلبك بنجاح!\n\nيرجى تحويل مبلغ $' + amount + ' عبر نظام CliQ إلى الرقم:\n0790740659\n' + (receiptFile ? 'تم تسجيل إرفاق الإيصال الخاص بك.' : 'تأكد من إرسال صورة الإيصال في سيرفر الديسكورد لتأكيد الطلب الفوري.'));
             }
         }
     </script>
