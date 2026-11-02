@@ -132,23 +132,54 @@
             border-color: var(--accent-green);
         }
 
+        /* لوحة التحكم المصغرة (داشبورد الطلب) */
+        .order-dashboard {
+            background: #0d1214;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .order-dashboard h4 {
+            font-size: 0.9rem;
+            color: var(--accent-green);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .dash-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .dash-row span:last-child {
+            color: #fff;
+            font-weight: 600;
+        }
+
         .price-display {
             background-color: rgba(83, 252, 24, 0.05);
             border: 1px dashed var(--accent-green);
             border-radius: 8px;
-            padding: 15px;
+            padding: 12px;
             text-align: center;
-            margin-top: 20px;
+            margin-top: 15px;
         }
 
         .price-display span {
             display: block;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--text-muted);
         }
 
         .price-display strong {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             color: var(--accent-green);
         }
 
@@ -227,13 +258,18 @@
     <div class="container">
         <div class="grid">
             
-            <!-- 1. حاسبة مشاهدات اللايف -->
+            <!-- 1. حاسبة مشاهدات اللايف مع حقل رابط القناة والداشبورد -->
             <div class="card">
                 <div class="card-header">
                     <i class="fa-solid fa-eye"></i>
                     <h2>مشاهدات بث مباشر (Live Views)</h2>
                 </div>
                 
+                <div class="form-group">
+                    <label>رابط قناة أو بث Kick المستهدف:</label>
+                    <input type="text" id="live-channel-link" placeholder="https://kick.com/your-channel">
+                </div>
+
                 <div class="form-group">
                     <label>مدة المشاهدة (بالدقائق):</label>
                     <select id="live-duration" onchange="calculateLive()">
@@ -249,6 +285,23 @@
                     <input type="number" id="live-quantity" value="50" min="1" oninput="calculateLive()">
                 </div>
 
+                <!-- داشبورد ملخص الطلب الحية -->
+                <div class="order-dashboard">
+                    <h4><i class="fa-solid fa-chart-line"></i> ملخص الطلب (Dashboard)</h4>
+                    <div class="dash-row">
+                        <span>الخدمة:</span>
+                        <span>مشاهدات كيك</span>
+                    </div>
+                    <div class="dash-row">
+                        <span>المدة المختارة:</span>
+                        <span id="dash-duration-text">ساعة واحدة</span>
+                    </div>
+                    <div class="dash-row">
+                        <span>العدد المطلوب:</span>
+                        <span id="dash-qty-text">50 مشاهد</span>
+                    </div>
+                </div>
+
                 <div class="price-display">
                     <span>السعر الإجمالي:</span>
                     <strong id="live-total">$0.40</strong>
@@ -259,11 +312,16 @@
                 </button>
             </div>
 
-            <!-- 2. حاسبة المتابعين ($5 لـ 1000 متابع) -->
+            <!-- 2. حاسبة المتابعين -->
             <div class="card">
                 <div class="card-header">
                     <i class="fa-solid fa-users"></i>
                     <h2>متابعين كيك (Followers)</h2>
+                </div>
+
+                <div class="form-group">
+                    <label>رابط قناة Kick الخاصة بك:</label>
+                    <input type="text" id="follower-channel-link" placeholder="https://kick.com/your-channel">
                 </div>
 
                 <div class="form-group">
@@ -322,8 +380,8 @@
         <!-- معلومات الدعم والتحويل لـ PayPal -->
         <div class="paypal-info">
             <h3><i class="fa-brands fa-paypal" style="color:#0079C1;"></i> طريقة الدفع والتأكيد:</h3>
-            <p>حساب الاستقبال: <code>hmzhmhasnh19@gmail.com</code></p>
-            <p style="margin-top:8px; font-size:0.88rem; color:var(--text-muted);">* يرجى إضافة رابط قناة Kick الخاصة بك في ملاحظات التحويل لضمان بدء التنفيذ الفوري.</p>
+            <p>حساب الاستقبال: <code>hmzhmhasnh19@gmail.com</code>[cite: 1]</p>
+            <p style="margin-top:8px; font-size:0.88rem; color:var(--text-muted);">* يرجى إدخال رابط القناة في حقل الطلب لضمان بدء التنفيذ الفوري.</p>
             
             <div style="margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 15px;">
                 <p style="margin-bottom: 5px;">تحتاج مساعدة أو لديك استفسار؟ انضم لسيرفر الديسكورد الخاص بنا:</p>
@@ -338,10 +396,17 @@
         const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1566415682663612416/kZ5LxDZtCZgNdTD6dtyK-fgaFJSsu85xsjKwhS5DLBLkd0U3-cnW1PQFvQSK8Z-xpcoN";
 
         function calculateLive() {
-            const pricePerThousand = parseFloat(document.getElementById('live-duration').value);
-            const quantity = parseInt(document.getElementById('live-quantity').value) || 0;
+            const durationSelect = document.getElementById('live-duration');
+            const pricePerThousand = parseFloat(durationSelect.value);
+            const quantityInput = document.getElementById('live-quantity');
+            const quantity = parseInt(quantityInput.value) || 0;
+            
             const total = ((pricePerThousand / 1000) * quantity).toFixed(2);
             document.getElementById('live-total').innerText = '$' + total;
+
+            const selectedText = durationSelect.options[durationSelect.selectedIndex].text.split(' - ')[0];
+            document.getElementById('dash-duration-text').innerText = selectedText;
+            document.getElementById('dash-qty-text').innerText = quantity + " مشاهد";
         }
 
         function calculateFollowers() {
@@ -363,7 +428,7 @@
             calculateChat();
         };
 
-        function sendDiscordNotification(serviceName, amount, quantity) {
+        function sendDiscordNotification(serviceName, amount, quantity, channelLink) {
             if (!DISCORD_WEBHOOK_URL) return;
 
             const payload = {
@@ -375,6 +440,7 @@
                         { name: "المالك والمطور", value: "Tyson (tt7)", inline: false },
                         { name: "الخدمة المطلوب شراءها", value: serviceName, inline: true },
                         { name: "الكمية / التفاصيل", value: quantity.toString(), inline: true },
+                        { name: "رابط القناة المستهدفة", value: channelLink || "لم يتم إدخال الرابط", inline: false },
                         { name: "المبلغ المطلوب تحويله", value: `$${amount}`, inline: false }
                     ],
                     footer: { text: "ABH Store • Managed by Tyson (tt7)" },
@@ -397,16 +463,32 @@
 
             let amount = "0";
             let quantity = "";
+            let channelLink = "";
 
             if(serviceName === 'مشاهدات بث مباشر') {
+                channelLink = document.getElementById('live-channel-link').value.trim();
+                if(!channelLink) {
+                    alert('يرجى إدخال رابط قناة Kick المستهدفة أولاً!');
+                    document.getElementById('live-channel-link').focus();
+                    return;
+                }
                 amount = document.getElementById('live-total').innerText.replace('$', '');
-                quantity = document.getElementById('live-quantity').value + " مشاهدين (" + document.getElementById('live-duration').selectedOptions[0].text + ")";
+                const durationText = document.getElementById('dash-duration-text').innerText;
+                const qtyText = document.getElementById('live-quantity').value;
+                quantity = qtyText + " مشاهدين (" + durationText + ")";
             } else if(serviceName === 'متابعين') {
+                channelLink = document.getElementById('follower-channel-link').value.trim();
+                if(!channelLink) {
+                    alert('يرجى إدخال رابط قناة Kick الخاصة بك أولاً!');
+                    document.getElementById('follower-channel-link').focus();
+                    return;
+                }
                 amount = document.getElementById('follower-total').innerText.replace('$', '');
                 quantity = document.getElementById('follower-quantity').value + " متابع";
             }
             
-            sendDiscordNotification(serviceName, amount, quantity);
+            // إرسال الإشعار للديسكورد شاملاً رابط القناة
+            sendDiscordNotification(serviceName, amount, quantity, channelLink);
 
             const email = "hmzhmhasnh19@gmail.com";
             const paypalUrl = `https://www.paypal.com/myaccount/transfer/homepage/external/send?recipient=${encodeURIComponent(email)}&amount=${amount}`;
